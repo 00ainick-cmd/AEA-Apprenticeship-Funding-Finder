@@ -280,15 +280,7 @@ let cur=null,vet=false,filt='all';
 
 document.addEventListener('DOMContentLoaded',()=>{
 const sel=document.getElementById('stSel');
-// Put states with programs first, marked with ★
-const withProg=Object.entries(ST).filter(([c])=>STATES[c]).sort((a,b)=>a[1].localeCompare(b[1]));
-const without=Object.entries(ST).filter(([c])=>!STATES[c]).sort((a,b)=>a[1].localeCompare(b[1]));
-const og1=document.createElement('optgroup');og1.label='★ States with Specific Programs';
-withProg.forEach(([c,n])=>{const o=document.createElement('option');o.value=c;o.textContent=n;og1.appendChild(o)});
-sel.appendChild(og1);
-const og2=document.createElement('optgroup');og2.label='All States (Federal Programs Apply)';
-without.forEach(([c,n])=>{const o=document.createElement('option');o.value=c;o.textContent=n;og2.appendChild(o)});
-sel.appendChild(og2);
+Object.entries(ST).sort((a,b)=>a[1].localeCompare(b[1])).forEach(([c,n])=>{const o=document.createElement('option');o.value=c;o.textContent=n;sel.appendChild(o)});
 
 sel.addEventListener('change',e=>{if(e.target.value){cur=e.target.value;show()}});
 document.getElementById('vetTog').addEventListener('change',e=>{vet=e.target.checked;if(cur)show()});
@@ -304,7 +296,7 @@ let p=[];
 FED.forEach(f=>{if(!vet&&f.vet)return;p.push({...f,level:'federal'})});
 const sd=STATES[cur];
 if(sd){sd.programs.forEach(sp=>{p.push({...sp,level:'state',cats:sp.tc?['tax-credit']:['training'],diff:sp.flag?'moderate':'easy',who:'Employers in '+sd.name+' with registered apprenticeships.',how:'Visit program website or contact state workforce agency.',ra:true,vet:false,tip:sd.notes||''})})
-}else{p.push({id:'st-wioa',name:ST[cur]+' Workforce Programs',agency:ST[cur]+' Workforce Agency',amount:'Varies — WIOA and state grants',note:'No dedicated state tax credit, but your local American Job Center has WIOA funding for OJT reimbursement and training grants.',desc:'Every state has an American Job Center that can connect you with WIOA-funded training and wage reimbursement. Contact yours.',level:'state',cats:['training','wages'],diff:'moderate',url:'https://www.careeronestop.org/LocalHelp/AmericanJobCenters/find-american-job-centers.aspx',ra:false,vet:false,who:'Any employer working with their local workforce board.',how:'Contact your local American Job Center.',tip:'Don\'t assume your state has nothing. Workforce boards have money and targets. Call them.'})}
+}else{p.push({id:'st-next',name:'Your Next Steps in '+ST[cur],agency:ST[cur]+' + Federal Resources',amount:'Federal programs apply everywhere',note:'No dedicated state apprenticeship tax credit found yet — but every federal program above applies to your shop. Here\'s exactly what to do.',desc:'No state-specific tax credit identified for '+ST[cur]+', but that doesn\'t mean there\'s no money. All federal programs (GI Bill, SkillBridge, WIOA, COOL, VR&E) apply in every state. Plus your state may have workforce grants we haven\'t catalogued yet.',level:'state',cats:['training','wages'],diff:'easy',url:'https://www.apprenticeship.gov/partners/find-your-state-apprenticeship-agency',ra:false,vet:false,who:'Any shop in '+ST[cur]+' joining the AEA/Fastport apprenticeship program.',how:'1. Sign the one-page Employer Acceptance Agreement (Fastport handles DOL compliance).\n2. Contact your state apprenticeship agency — find them at apprenticeship.gov/partners/find-your-state-apprenticeship-agency.\n3. Call your local American Job Center and ask about WIOA OJT reimbursement — they can reimburse up to 50% of wages.\n4. If hiring veterans, contact your State Approving Agency (SAA) to get VA benefits flowing.\n5. AEA handles all Related Technical Instruction through CAET training.',tip:'Just because we haven\'t found a state tax credit doesn\'t mean your state has nothing. Call your state apprenticeship agency directly — they know about local grants, workforce board funds, and economic development incentives that aren\'t published online. Tell them you\'re joining a national registered apprenticeship program and ask what\'s available.'})}
 return p;
 }
 
