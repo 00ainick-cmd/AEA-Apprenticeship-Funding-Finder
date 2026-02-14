@@ -1,46 +1,40 @@
 # AEA Apprenticeship Funding Finder
 
-Interactive web tool for AEA member shops to find apprenticeship funding opportunities by state.
+Interactive tool for AEA member shops to discover apprenticeship funding opportunities — federal programs, state tax credits, veteran benefits, and workforce grants.
 
-## What It Does
+**Built by the Aircraft Electronics Association (AEA)**
 
-- Select your state → see all federal and state funding you qualify for
-- Filter by category (tax credits, wage support, training, veteran programs)
-- Click any program for plain-English details, eligibility, and how to apply
-- See stacking examples showing total first-year value ($30K-$60K+ for veteran hires)
-- Toggle veteran-specific programs on/off
+## What This Is
+
+A single-page web tool that helps Part 145 repair stations and avionics shops find money they're leaving on the table by not having a registered apprenticeship program.
+
+Select your state → see every federal and state funding opportunity → click for details, eligibility, and how to apply → see how programs stack together.
 
 ## How It Works
 
-Pure static site. No backend. All data lives in `data/grants.json`.
-
-- `index.html` — single page app
-- `css/style.css` — responsive design
-- `js/app.js` — state selection, filtering, modals
-- `data/grants.json` — structured grant database (10 federal programs, 15+ states)
-
-## Deployment
-
-Same pattern as AEA career map:
-1. Push to GitHub
-2. Aaron tests on AEA staging
-3. Deploy to AEA website
-
-Can also run standalone via GitHub Pages or any static host.
+- `index.html` — The funding finder tool
+- `apprenticeship-guide.html` — Interactive apprenticeship requirements reference
+- `data/grants.json` — Structured funding database (all entries source-verified)
+- `research/` — Source research documentation with .gov citations
 
 ## Data Sources
 
-Every program links to its .gov source URL. See `data/grants.json` → `verificationNeeded` for items flagged for pre-convention verification.
+Every funding entry is sourced from official government websites. Source URLs, statute numbers, and verification dates are included in the data and displayed in the tool.
 
-## Local Development
+See `research/funding-database.md` for the full research documentation with citations.
 
-Just open `index.html` in a browser. No build step.
+## Verification Status
 
-```bash
-# Or use a local server for proper fetch() behavior
-python3 -m http.server 8080
-```
+Items flagged with ⚠️ need additional verification before presentation. See the `verificationNeeded` section in `grants.json` for specifics.
 
-## Built For
+## Deployment
 
-AEA Convention 2026 (March 23-26, Dallas) — announced alongside the AEA/Fastport Registered Apprenticeship program launch and DOL signing ceremony.
+Static site — no backend required. Deploy via GitHub Pages, S3/CloudFront, or any static host.
+
+## Context
+
+This tool supports the AEA/Fastport registered apprenticeship program for Avionics Technicians (O*NET 49-2091.00). Fastport handles DOL compliance. AEA provides Related Technical Instruction (RTI) through CAET training. Member shops join the national program with a one-page Employer Acceptance Agreement.
+
+## License
+
+© 2026 Aircraft Electronics Association. All rights reserved.

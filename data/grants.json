@@ -325,17 +325,20 @@
       "name": "South Carolina",
       "programs": [
         {
-          "id": "sc-workforce",
-          "name": "SC Workforce Development Programs",
-          "amount": "Varies",
-          "description": "South Carolina offers workforce development grants through readySC and Apprenticeship Carolina. Includes training grants and employer support.",
+          "id": "sc-apprenticeship-carolina",
+          "name": "Apprenticeship Carolina",
+          "amount": "$1,000/apprentice/year tax credit + free technical assistance",
+          "description": "Apprenticeship Carolina provides free technical assistance to employers setting up apprenticeship programs, plus a $1,000 annual tax credit per registered apprentice. One of the strongest state programs in the country.",
           "url": "https://www.apprenticeshipcarolina.com/",
-          "taxCredit": false,
-          "confidence": "high"
+          "sourceUrl": "https://www.scstatehouse.gov/code/t12c006.php",
+          "statute": "SC Code §12-6-3540",
+          "taxCredit": true,
+          "confidence": "high",
+          "lastVerified": "2026-02-14"
         }
       ],
-      "taxCredit": null,
-      "notes": "One of the 5 launch states for AEA/Fastport. Apprenticeship Carolina is a strong state program with employer support."
+      "taxCredit": "$1,000/apprentice/year",
+      "notes": "One of the 5 launch states for AEA/Fastport. Apprenticeship Carolina is one of the strongest state programs in the country — they'll walk you through everything."
     },
     "WV": {
       "name": "West Virginia",
