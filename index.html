@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEA Apprenticeship Funding Finder</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="logo-area">
+                <h1>AEA Apprenticeship<br><span class="accent">Funding Finder</span></h1>
+                <p class="tagline">Find the money your shop is leaving on the table.</p>
+            </div>
+            <div class="header-badge">
+                <div class="badge-amount" id="headerTotal">$0</div>
+                <div class="badge-label">Potential First-Year Value</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Step 1: State Selection -->
+        <section id="stateSelection" class="step active">
+            <h2>Step 1: Where is your shop?</h2>
+            <p class="step-desc">Select your state to see what funding you qualify for.</p>
+            <div class="state-grid">
+                <select id="stateSelect">
+                    <option value="">— Select Your State —</option>
+                </select>
+            </div>
+            <div class="toggle-row">
+                <label class="toggle">
+                    <input type="checkbox" id="veteranToggle">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">Show veteran-specific programs</span>
+                </label>
+                <p class="toggle-hint">Check this if you plan to hire veterans or transitioning military</p>
+            </div>
+        </section>
+
+        <!-- Step 2: Results Dashboard -->
+        <section id="resultsDashboard" class="step hidden">
+            <div class="results-header">
+                <h2>Funding Available in <span id="stateName"></span></h2>
+                <button class="btn-back" onclick="resetState()">← Change State</button>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-strip">
+                <div class="summary-card">
+                    <div class="summary-value" id="totalPrograms">0</div>
+                    <div class="summary-label">Programs Available</div>
+                </div>
+                <div class="summary-card highlight">
+                    <div class="summary-value" id="totalValue">$0</div>
+                    <div class="summary-label">Est. First-Year Value</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="easyCount">0</div>
+                    <div class="summary-label">Easy to Apply</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="tax-credit">💰 Tax Credits</button>
+                <button class="filter-btn" data-filter="wages">💵 Wage Support</button>
+                <button class="filter-btn" data-filter="training">📚 Training</button>
+                <button class="filter-btn" data-filter="veteran">🎖️ Veteran</button>
+                <button class="filter-btn" data-filter="certification">📋 Certification</button>
+            </div>
+
+            <!-- Program Cards -->
+            <div id="programGrid" class="program-grid"></div>
+
+            <!-- Stacking Example -->
+            <div id="stackingSection" class="stacking-section hidden">
+                <h3>💡 Stack These Together — The Money Shot</h3>
+                <div id="stackingCards"></div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <h3>Ready to get started?</h3>
+                <p>Joining the AEA/Fastport apprenticeship is one page of paperwork. Fastport handles the DOL compliance. AEA provides the training. You just sign up and train your people.</p>
+                <div class="cta-buttons">
+                    <a href="https://www.aea.net" class="btn-primary" target="_blank">Contact AEA</a>
+                    <a href="https://fastport.com" class="btn-secondary" target="_blank">Learn About Fastport</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detail Modal -->
+        <div id="detailModal" class="modal hidden">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+
+        <!-- What's In It For Me Section -->
+        <section class="info-section">
+            <h2>What's a Registered Apprenticeship?</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🏭</div>
+                    <h4>For Your Shop</h4>
+                    <p>A structured way to train technicians — the same way you already do it, just formalized. Your apprentice works alongside a journeyworker learning 43 competencies over ~4 years. That's the OJT part. You're already doing this.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📚</div>
+                    <h4>The Training (RTI)</h4>
+                    <p>586 hours of classroom instruction. This is the hard part — and AEA handles it through CAET training. Four courses covering fundamentals through leadership. Your technician earns while they learn.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📋</div>
+                    <h4>The Paperwork</h4>
+                    <p>One page. The Employer Acceptance Agreement. Sign it, and Fastport handles everything else — DOL registration, compliance, reporting, EEO. That's their entire job.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">💰</div>
+                    <h4>The Money</h4>
+                    <p>Once you're registered, you unlock federal and state funding — tax credits, wage reimbursements, veteran benefits, training grants. That's what this tool shows you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- For Apprentices Section -->
+        <section class="info-section apprentice-section">
+            <h2>For Potential Apprentices</h2>
+            <p class="section-subtitle">Why work at an AEA member shop with a registered apprenticeship?</p>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">💵</div>
+                    <h4>Earn While You Learn</h4>
+                    <p>Start at $23/hr day one. No student debt. No tuition. You get paid to learn a skill that's in massive demand. Journeyworker wage: $30/hr.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📜</div>
+                    <h4>National Credential</h4>
+                    <p>DOL Certificate of Completion. Recognized nationwide. Plus a clear path to FAA A&P certification and Inspection Authorization.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎖️</div>
+                    <h4>Veterans: Direct Entry</h4>
+                    <p>Your military training counts. Direct entry — no hoops. GI Bill pays you $1,500–$3,000+/month ON TOP of your wages. COOL pays for certifications.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h4>Clear Career Path</h4>
+                    <p>43 competencies. You know exactly what to learn and when you've learned it. No guessing. Milestones, not mystery.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <p>Built by <a href="https://www.aea.net" target="_blank">Aircraft Electronics Association</a> | Data sourced from .gov databases</p>
+            <p class="disclaimer">This tool provides general information about potential funding opportunities. Verify all programs with the administering agency before making financial decisions. Amounts and eligibility may vary.</p>
+            <p class="updated">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
