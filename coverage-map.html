@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAET × Apprenticeship Coverage Map</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0e1a;--surface:rgba(255,255,255,.04);--glass:rgba(255,255,255,.06);
+--border:rgba(255,255,255,.08);--text:#e2e8f0;--muted:#94a3b8;
+--green:#10b981;--green-glow:rgba(16,185,129,.3);
+--amber:#f59e0b;--amber-glow:rgba(245,158,11,.3);
+--red:#ef4444;--red-glow:rgba(239,68,68,.3);
+--blue:#3b82f6;--purple:#8b5cf6;--cyan:#06b6d4;
+--accent:linear-gradient(135deg,#3b82f6,#8b5cf6);
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+.grain{position:fixed;inset:0;opacity:.03;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.glow-orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.glow-orb.a{width:600px;height:600px;background:rgba(59,130,246,.08);top:-200px;right:-100px}
+.glow-orb.b{width:500px;height:500px;background:rgba(139,92,246,.06);bottom:-150px;left:-100px}
+.glow-orb.c{width:400px;height:400px;background:rgba(6,182,212,.05);top:50%;left:50%;transform:translate(-50%,-50%)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:rgba(10,14,26,.8);border-bottom:1px solid var(--border);padding:16px 0}
+nav .container{display:flex;justify-content:space-between;align-items:center}
+nav .logo{font-weight:700;font-size:1.1rem;background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+nav .nav-links{display:flex;gap:24px}
+nav .nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .3s}
+nav .nav-links a:hover{color:#fff}
+.toggle-wrap{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
+.toggle-switch{width:48px;height:26px;background:var(--glass);border:1px solid var(--border);border-radius:13px;cursor:pointer;position:relative;transition:background .3s}
+.toggle-switch.active{background:rgba(16,185,129,.3);border-color:var(--green)}
+.toggle-switch::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .3s}
+.toggle-switch.active::after{transform:translateX(22px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;background:var(--glass);border:1px solid var(--border);font-size:.8rem;color:var(--cyan);margin-bottom:32px;backdrop-filter:blur(10px)}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:24px;letter-spacing:-.03em}
+.hero h1 .gradient{background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:680px;margin:0 auto 48px}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:3rem;font-weight:800;background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-stat .label{font-size:.8rem;color:var(--muted);margin-top:4px}
+
+/* SECTION */
+section{padding:100px 0}
+.section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--cyan);margin-bottom:12px}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:16px;letter-spacing:-.02em}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:600px;margin-bottom:48px}
+
+/* DONUT */
+.donut-section{text-align:center}
+.donut-wrap{position:relative;width:280px;height:280px;margin:0 auto 40px}
+.donut-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:18}
+.donut-fill{fill:none;stroke:url(#donutGrad);stroke-width:18;stroke-linecap:round;stroke-dasharray:0 754;transition:stroke-dasharray 2s cubic-bezier(.4,0,.2,1)}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-pct{font-size:3.5rem;font-weight:800;background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.donut-label{font-size:.85rem;color:var(--muted)}
+.donut-legend{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+
+/* DOMAIN CARDS */
+.domains-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.domain-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.domain-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-2px)}
+.domain-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.02));pointer-events:none}
+.domain-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.domain-num{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.domain-status{font-size:.75rem;padding:4px 10px;border-radius:100px;font-weight:600}
+.domain-status.green{background:rgba(16,185,129,.15);color:var(--green)}
+.domain-status.amber{background:rgba(245,158,11,.15);color:var(--amber)}
+.domain-status.red{background:rgba(239,68,68,.15);color:var(--red)}
+.domain-name{font-size:1.05rem;font-weight:600;margin-bottom:12px}
+.domain-bar-wrap{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.domain-bar{height:100%;border-radius:3px;transition:width 1.5s cubic-bezier(.4,0,.2,1);width:0}
+.domain-bar.green{background:var(--green)}
+.domain-bar.amber{background:var(--amber)}
+.domain-bar.red{background:var(--red)}
+.domain-meta{font-size:.8rem;color:var(--muted)}
+.domain-expand{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.domain-card.open .domain-expand{max-height:600px}
+.domain-expand-inner{padding-top:16px;border-top:1px solid var(--border);margin-top:16px}
+.comp-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,.03)}
+.comp-item:last-child{border-bottom:none}
+.comp-status{font-size:.75rem;padding:2px 8px;border-radius:100px}
+.comp-status.covered{background:rgba(16,185,129,.12);color:var(--green)}
+.comp-status.partial{background:rgba(245,158,11,.12);color:var(--amber)}
+.comp-status.gap{background:rgba(239,68,68,.12);color:var(--red)}
+.domain-chevron{transition:transform .3s;display:inline-block;margin-left:8px;font-size:.7rem}
+.domain-card.open .domain-chevron{transform:rotate(180deg)}
+
+/* TIMELINE */
+.timeline{display:flex;gap:0;position:relative;margin-bottom:40px;flex-wrap:wrap}
+.timeline::before{content:'';position:absolute;top:40px;left:0;right:0;height:3px;background:rgba(255,255,255,.06);border-radius:2px}
+.phase{flex:1;min-width:200px;padding:0 12px;position:relative;text-align:center}
+.phase-dot{width:20px;height:20px;border-radius:50%;margin:30px auto 20px;position:relative;z-index:2;border:3px solid var(--bg)}
+.phase-dot.high{background:var(--green);box-shadow:0 0 20px var(--green-glow)}
+.phase-dot.med{background:var(--amber);box-shadow:0 0 20px var(--amber-glow)}
+.phase-dot.low{background:var(--red);box-shadow:0 0 20px var(--red-glow)}
+.phase-name{font-weight:600;font-size:.95rem;margin-bottom:4px}
+.phase-hours{font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.phase-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.phase-bar{height:100%;border-radius:4px;transition:width 1.5s cubic-bezier(.4,0,.2,1);width:0}
+.phase-pct{font-size:1.4rem;font-weight:700}
+
+/* MODULES */
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.module-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .3s;position:relative;overflow:hidden}
+.module-card:hover{border-color:rgba(59,130,246,.3);transform:translateY(-1px)}
+.module-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.module-num{font-size:.7rem;color:var(--blue);font-weight:700;letter-spacing:.1em;margin-bottom:6px}
+.module-name{font-size:.9rem;font-weight:600}
+.module-track{font-size:.7rem;color:var(--muted);margin-top:6px}
+
+/* GAPS */
+.gap-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.gap-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:2px}
+.gap-card.p1::before{background:var(--red)}
+.gap-card.p2::before{background:var(--amber)}
+.gap-card.p3::before{background:var(--blue)}
+.gap-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.gap-title{font-size:1.1rem;font-weight:600}
+.gap-hours{font-size:.85rem;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--muted)}
+.gap-desc{font-size:.9rem;color:var(--muted);margin-bottom:12px}
+.gap-topics{display:flex;flex-wrap:wrap;gap:6px}
+.gap-tag{font-size:.75rem;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
+.priority-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:16px}
+.priority-label.p1{color:var(--red)}
+.priority-label.p2{color:var(--amber)}
+.priority-label.p3{color:var(--blue)}
+
+/* EFFORT */
+.effort-box{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:40px;text-align:center;backdrop-filter:blur(10px)}
+.effort-big{font-size:4rem;font-weight:800;background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.effort-unit{font-size:1.2rem;color:var(--muted);margin-top:4px}
+.effort-note{font-size:.95rem;color:var(--muted);margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto}
+.effort-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px}
+.effort-item{background:rgba(255,255,255,.03);border-radius:12px;padding:20px;text-align:center}
+.effort-item .val{font-size:1.8rem;font-weight:700;color:#fff}
+.effort-item .lbl{font-size:.8rem;color:var(--muted);margin-top:4px}
+
+/* CTA */
+.cta-section{text-align:center;padding:120px 0}
+.cta-box{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.2);border-radius:24px;padding:64px 40px;max-width:800px;margin:0 auto;backdrop-filter:blur(10px)}
+.cta-box h2{font-size:2.2rem;font-weight:700;margin-bottom:16px}
+.cta-box p{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto}
+.cta-box .highlight{color:var(--green);font-weight:600}
+
+/* VALUE ADD */
+.value-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.value-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:24px}
+.value-icon{font-size:1.5rem;margin-bottom:12px}
+.value-title{font-weight:600;margin-bottom:6px}
+.value-desc{font-size:.85rem;color:var(--muted)}
+
+/* FOOTER */
+footer{text-align:center;padding:48px 0;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.stagger{transition-delay:calc(var(--i) * .1s)}
+
+@media(max-width:768px){
+  .hero-stats{gap:24px}
+  .hero-stat .num{font-size:2.2rem}
+  .timeline{flex-direction:column}
+  .timeline::before{display:none}
+  nav .nav-links{display:none}
+  .effort-big{font-size:3rem}
+  .cta-box{padding:40px 24px}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="glow-orb a"></div>
+<div class="glow-orb b"></div>
+<div class="glow-orb c"></div>
+
+<nav>
+<div class="container">
+<div class="logo">CAET × APPRENTICESHIP</div>
+<div class="nav-links">
+<a href="#coverage">Coverage</a>
+<a href="#domains">Domains</a>
+<a href="#timeline">Phases</a>
+<a href="#built">Built</a>
+<a href="#gaps">Gaps</a>
+<a href="#plan">Plan</a>
+</div>
+<div class="toggle-wrap">
+<span>Current</span>
+<div class="toggle-switch" id="coverageToggle" onclick="toggleCoverage()"></div>
+<span>After Gap Fill</span>
+</div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div>
+<div class="hero-badge fade-up"><span class="dot"></span>Curriculum Gap Analysis — February 2026</div>
+<h1 class="fade-up" style="--i:1">CAET Already Covers<br><span class="gradient">57% of Apprenticeship</span><br>Training Requirements</h1>
+<p class="fade-up" style="--i:2">14 modules of world-class interactive training. Here's what we've built, here's what we need, and here's the path to 100% coverage.</p>
+<div class="hero-stats fade-up" style="--i:3">
+<div class="hero-stat"><div class="num" data-count="43">0</div><div class="label">Competencies</div></div>
+<div class="hero-stat"><div class="num" data-count="586">0</div><div class="label">RTI Hours</div></div>
+<div class="hero-stat"><div class="num" data-count="14">0</div><div class="label">CAET Modules</div></div>
+<div class="hero-stat"><div class="num" data-count="25">0</div><div class="label">Already Covered</div></div>
+</div>
+</div>
+</section>
+
+<!-- COVERAGE DONUT -->
+<section id="coverage" class="donut-section">
+<div class="container">
+<div class="section-label fade-up">Overall Coverage</div>
+<div class="section-title fade-up" style="text-align:center">Apprenticeship Competency Alignment</div>
+<div class="section-sub fade-up" style="text-align:center;margin:0 auto 48px">CAET's existing curriculum maps directly to over half of all required competencies — with three domains at 100% coverage.</div>
+<div class="donut-wrap fade-up">
+<svg viewBox="0 0 260 260">
+<defs><linearGradient id="donutGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
+<circle cx="130" cy="130" r="120" class="donut-bg"/>
+<circle cx="130" cy="130" r="120" class="donut-fill" id="donutFill"/>
+</svg>
+<div class="donut-center">
+<div class="donut-pct" id="donutPct">0%</div>
+<div class="donut-label" id="donutLabel">Coverage</div>
+</div>
+</div>
+<div class="donut-legend fade-up">
+<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Fully Covered (25)</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Partially Covered (10)</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Gap (8)</div>
+</div>
+</div>
+</section>
+
+<!-- DOMAINS -->
+<section id="domains">
+<div class="container">
+<div class="section-label fade-up">8 Competency Domains</div>
+<div class="section-title fade-up">Domain-by-Domain Coverage</div>
+<div class="section-sub fade-up">Click any domain to see individual competency mapping.</div>
+<div class="domains-grid" id="domainsGrid"></div>
+</div>
+</section>
+
+<!-- RTI TIMELINE -->
+<section id="timeline">
+<div class="container">
+<div class="section-label fade-up">RTI Phases</div>
+<div class="section-title fade-up">Training Phase Coverage</div>
+<div class="section-sub fade-up">586 hours across four phases — CAET's strongest alignment is in fundamentals.</div>
+<div class="timeline fade-up" id="phasesTimeline"></div>
+</div>
+</section>
+
+<!-- WHAT WE'VE BUILT -->
+<section id="built">
+<div class="container">
+<div class="section-label fade-up">What We've Built</div>
+<div class="section-title fade-up">14 Modules of World-Class Training</div>
+<div class="section-sub fade-up">Two complete certification tracks — from DC fundamentals to emerging technologies.</div>
+<div style="margin-bottom:32px">
+<div style="font-size:.8rem;color:var(--cyan);font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em" class="fade-up">CAET Bench Technician — Modules 1–7</div>
+<div class="modules-grid fade-up" id="benchModules"></div>
+</div>
+<div>
+<div style="font-size:.8rem;color:var(--purple);font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em" class="fade-up">CAET Advanced — Modules 8–14</div>
+<div class="modules-grid fade-up" id="advModules"></div>
+</div>
+</div>
+</section>
+
+<!-- VALUE ADD -->
+<section>
+<div class="container">
+<div class="section-label fade-up">Beyond the Minimum</div>
+<div class="section-title fade-up">CAET Exceeds Apprenticeship Requirements</div>
+<div class="section-sub fade-up">Where CAET goes further than the apprenticeship asks.</div>
+<div class="value-grid">
+<div class="value-card fade-up" style="--i:0"><div class="value-icon">🛩️</div><div class="value-title">Advanced Avionics</div><div class="value-desc">FMS, GPS WAAS, advanced autopilots — content the apprenticeship only covers at a basic level.</div></div>
+<div class="value-card fade-up" style="--i:1"><div class="value-icon">📡</div><div class="value-title">Digital Data Buses</div><div class="value-desc">Comprehensive ARINC 429, CAN bus, RS-232 coverage far exceeding apprenticeship minimums.</div></div>
+<div class="value-card fade-up" style="--i:2"><div class="value-icon">🔬</div><div class="value-title">Modern Test Equipment</div><div class="value-desc">Current avionics test sets and simulation tools, not just generic hand tools.</div></div>
+<div class="value-card fade-up" style="--i:3"><div class="value-icon">⚡</div><div class="value-title">ESD Protection</div><div class="value-desc">Detailed Class 1A device protection procedures — industry-leading safety depth.</div></div>
+<div class="value-card fade-up" style="--i:4"><div class="value-icon">💻</div><div class="value-title">Software & Config</div><div class="value-desc">Navigation database management and configuration beyond basic apprenticeship scope.</div></div>
+<div class="value-card fade-up" style="--i:5"><div class="value-icon">🔍</div><div class="value-title">Troubleshooting</div><div class="value-desc">Systematic, scenario-based methodology — not just basic fault-finding.</div></div>
+</div>
+</div>
+</section>
+
+<!-- GAPS -->
+<section id="gaps">
+<div class="container">
+<div class="section-label fade-up">What We Need to Build</div>
+<div class="section-title fade-up">Identified Gaps = Clear Opportunities</div>
+<div class="section-sub fade-up">Focused content development to achieve 100% apprenticeship compliance.</div>
+<div id="gapsList"></div>
+</div>
+</section>
+
+<!-- EFFORT -->
+<section id="plan">
+<div class="container">
+<div class="effort-box fade-up">
+<div class="effort-big" data-count="215">0</div>
+<div class="effort-unit">hours of new content to reach 100%</div>
+<div class="effort-note">A focused 10-month development effort transforms CAET into the <strong style="color:#fff">complete national RTI solution</strong> for avionics apprenticeship.</div>
+<div class="effort-grid">
+<div class="effort-item"><div class="val" data-count="20">0</div><div class="lbl">Ground Operations</div></div>
+<div class="effort-item"><div class="val" data-count="100">0</div><div class="lbl">Structures & Installation</div></div>
+<div class="effort-item"><div class="val" data-count="30">0</div><div class="lbl">Engine Integration</div></div>
+<div class="effort-item"><div class="val" data-count="65">0</div><div class="lbl">Business & Leadership</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+<div class="container">
+<div class="cta-box fade-up">
+<h2>The Apprenticeship Opens Doors.<br><span class="gradient">CAET Builds Careers.</span></h2>
+<p>CAET isn't just compliant — it's <span class="highlight">superior</span>. We prepare technicians for glass cockpits, advanced autopilots, and next-generation avionics. <span class="highlight">57% built. A clear path to 100%.</span></p>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<p>CAET × AEA/Fastport Apprenticeship Coverage Analysis — February 2026</p>
+</div>
+</footer>
+
+<script>
+// DATA
+const domains = [
+  {name:"Aircraft Ground Operations",count:8,covered:3,partial:2,gap:3,pct:37.5,color:"amber",
+   comps:[{n:"Hazard identification",s:"covered",m:"Module 7"},{n:"Visual inspection procedures",s:"partial",m:"Limited coverage"},{n:"Electrical servicing",s:"covered",m:"Module 8"},{n:"Aircraft marshaling",s:"gap",m:"Not covered"},{n:"Start/operate procedures",s:"partial",m:"Limited Module 8"},{n:"Taxi procedures",s:"gap",m:"Not covered"},{n:"Tie-down procedures",s:"gap",m:"Not covered"},{n:"Ground support/test equipment",s:"covered",m:"Module 6"}]},
+  {name:"Tools & Test Equipment",count:4,covered:4,partial:0,gap:0,pct:100,color:"green",
+   comps:[{n:"Common hand tools",s:"covered",m:"Module 6"},{n:"Specialty tools",s:"covered",m:"Module 6"},{n:"Avionics test equipment",s:"covered",m:"Modules 9-12"},{n:"Circuit testers/multimeters",s:"covered",m:"Module 1"}]},
+  {name:"Electrical Calculations",count:2,covered:2,partial:0,gap:0,pct:100,color:"green",
+   comps:[{n:"Circuit performance calculations",s:"covered",m:"Modules 1-2"},{n:"Basic circuit troubleshooting",s:"covered",m:"All modules"}]},
+  {name:"Wiring/Harnesses/Components",count:5,covered:4,partial:1,gap:0,pct:80,color:"amber",
+   comps:[{n:"Harness fabrication/install/maintain",s:"partial",m:"Module 6"},{n:"Instrument install/maintain/troubleshoot",s:"covered",m:"Module 12"},{n:"Schematic interpretation",s:"covered",m:"Adv Module 1"},{n:"Voltage/current/resistance measurement",s:"covered",m:"Module 1"},{n:"Circuit protection devices",s:"covered",m:"Modules 1-2, 8"}]},
+  {name:"Aircraft Structures",count:7,covered:0,partial:3,gap:4,pct:14,color:"red",
+   comps:[{n:"Hardware/materials identification",s:"partial",m:"Limited"},{n:"Fasteners/rivets",s:"gap",m:"Not covered"},{n:"Sheet metal forming",s:"gap",m:"Not covered"},{n:"Composite repair",s:"gap",m:"Not covered"},{n:"Bonding techniques",s:"partial",m:"ESD context only"},{n:"Doublers/shelves/brackets",s:"gap",m:"Not covered"},{n:"Antenna installation",s:"partial",m:"Brief Adv coverage"}]},
+  {name:"Operational Checks",count:4,covered:3,partial:1,gap:0,pct:75,color:"amber",
+   comps:[{n:"External power procedures",s:"covered",m:"Module 8"},{n:"Specialty test equipment operation",s:"covered",m:"Modules 9-12"},{n:"FAR 91.411/91.413 knowledge",s:"covered",m:"Module 5 + Adv 7"},{n:"Installation manual checkout",s:"partial",m:"Module 5"}]},
+  {name:"Avionics Systems Integration",count:9,covered:6,partial:3,gap:0,pct:67,color:"amber",
+   comps:[{n:"CNS systems",s:"covered",m:"Modules 9-11"},{n:"Flight instruments",s:"covered",m:"Module 12"},{n:"Digital databus",s:"covered",m:"Module 4"},{n:"Engine monitoring",s:"partial",m:"Limited"},{n:"Configuration identification",s:"partial",m:"Partial"},{n:"Manual/STC interpretation",s:"covered",m:"Module 5"},{n:"Equipment for operations types",s:"covered",m:"Avionics modules"},{n:"Wiring interface/circuit protection",s:"covered",m:"Modules 1-2, 8"},{n:"Installation techniques",s:"partial",m:"Theoretical only"}]},
+  {name:"Software & Database Configuration",count:4,covered:4,partial:0,gap:0,pct:100,color:"green",
+   comps:[{n:"Config software/database requirements",s:"covered",m:"Module 4 + 13"},{n:"Equipment config per manufacturer data",s:"covered",m:"Module 5"},{n:"Configuration device connection",s:"covered",m:"Module 4"},{n:"Software/database loading",s:"covered",m:"Module 13"}]}
+];
+
+const phases = [
+  {name:"Phase 1: Fundamentals",hours:150,pct:85,color:"green",dot:"high"},
+  {name:"Phase 2: Airframe Integration",hours:150,pct:40,color:"amber",dot:"med"},
+  {name:"Phase 3: Powerplant & Regulatory",hours:100,pct:65,color:"amber",dot:"med"},
+  {name:"Phase 4: Leadership & QA",hours:186,pct:30,color:"red",dot:"low"}
+];
+
+const benchMods = [
+  {num:1,name:"DC Fundamentals"},{num:2,name:"AC Fundamentals"},{num:3,name:"Solid State Devices"},
+  {num:4,name:"Digital Electronics"},{num:5,name:"Technical Documents & Publications"},
+  {num:6,name:"Wire Harness Building & Soldering"},{num:7,name:"Safety & Human Factors"}
+];
+const advMods = [
+  {num:8,name:"Aircraft Electrical Systems"},{num:9,name:"Communication Systems"},
+  {num:10,name:"Navigation Systems"},{num:11,name:"Surveillance Systems"},
+  {num:12,name:"Flight Instruments"},{num:13,name:"Flight Management Systems"},
+  {num:14,name:"Emerging Technologies"}
+];
+
+const gaps = [
+  {pri:1,title:"Aircraft Structures & Installation",hours:"100 hrs",desc:"Sheet metal, fasteners, composites, antenna mounting, bracket fabrication — the largest content gap.",
+   tags:["Sheet Metal","Fasteners","Composites","Antenna Mounting","Brackets","Bonding"]},
+  {pri:1,title:"Aircraft Ground Operations",hours:"20 hrs",desc:"Marshaling, taxi, tie-down, ramp safety — essential field operations currently outside CAET scope.",
+   tags:["Marshaling","Taxi Procedures","Tie-Down","Ramp Safety","GSE"]},
+  {pri:2,title:"Engine Systems Integration",hours:"30 hrs",desc:"Engine monitoring installation, powerplant/avionics interfaces, engine electrical harnesses.",
+   tags:["Engine Monitoring","Powerplant Interface","Engine Harnesses"]},
+  {pri:2,title:"Business Skills & Quality Management",hours:"50 hrs",desc:"Work orders, customer communication, scheduling, QC procedures, job estimation.",
+   tags:["Work Orders","Customer Interface","Scheduling","Quality Control","Estimation"]},
+  {pri:3,title:"Operational Procedures Expansion",hours:"15 hrs",desc:"Enhanced checkout procedures, performance verification, configuration management.",
+   tags:["Checkout Procedures","Verification","Config Management"]}
+];
+
+// RENDER
+function renderDomains(){
+  const g=document.getElementById('domainsGrid');
+  domains.forEach((d,i)=>{
+    const card=document.createElement('div');
+    card.className='domain-card fade-up stagger';
+    card.style.setProperty('--i',i);
+    card.innerHTML=`
+      <div class="domain-header">
+        <div class="domain-num">Domain ${i+1}</div>
+        <div class="domain-status ${d.color}">${d.pct}%</div>
+      </div>
+      <div class="domain-name">${d.name} <span class="domain-chevron">▼</span></div>
+      <div class="domain-bar-wrap"><div class="domain-bar ${d.color}" data-pct="${d.pct}"></div></div>
+      <div class="domain-meta">${d.covered}/${d.count} covered · ${d.partial} partial · ${d.gap} gaps</div>
+      <div class="domain-expand"><div class="domain-expand-inner">
+        ${d.comps.map(c=>`<div class="comp-item"><span>${c.n}</span><span class="comp-status ${c.s}">${c.s==='covered'?'✓ Covered':c.s==='partial'?'◐ Partial':'✗ Gap'}</span></div>`).join('')}
+      </div></div>`;
+    card.addEventListener('click',()=>card.classList.toggle('open'));
+    g.appendChild(card);
+  });
+}
+
+function renderPhases(){
+  const t=document.getElementById('phasesTimeline');
+  phases.forEach(p=>{
+    const col=p.pct>=70?'var(--green)':p.pct>=50?'var(--amber)':'var(--red)';
+    t.innerHTML+=`<div class="phase">
+      <div class="phase-dot ${p.dot}"></div>
+      <div class="phase-name">${p.name}</div>
+      <div class="phase-hours">${p.hours} hours</div>
+      <div class="phase-bar-wrap"><div class="phase-bar" data-pct="${p.pct}" style="background:${col}"></div></div>
+      <div class="phase-pct" style="color:${col}">${p.pct}%</div>
+    </div>`;
+  });
+}
+
+function renderModules(){
+  const b=document.getElementById('benchModules'),a=document.getElementById('advModules');
+  benchMods.forEach((m,i)=>{b.innerHTML+=`<div class="module-card fade-up stagger" style="--i:${i}"><div class="module-num">MODULE ${m.num}</div><div class="module-name">${m.name}</div><div class="module-track">Bench Technician Track</div></div>`});
+  advMods.forEach((m,i)=>{a.innerHTML+=`<div class="module-card fade-up stagger" style="--i:${i}"><div class="module-num">MODULE ${m.num}</div><div class="module-name">${m.name}</div><div class="module-track">Advanced Track</div></div>`});
+}
+
+function renderGaps(){
+  const l=document.getElementById('gapsList');
+  gaps.forEach(g=>{
+    l.innerHTML+=`<div class="gap-card p${g.pri} fade-up">
+      <div class="priority-label p${g.pri}">Priority ${g.pri}</div>
+      <div class="gap-header"><div class="gap-title">${g.title}</div><div class="gap-hours">${g.hours}</div></div>
+      <div class="gap-desc">${g.desc}</div>
+      <div class="gap-topics">${g.tags.map(t=>`<span class="gap-tag">${t}</span>`).join('')}</div>
+    </div>`;
+  });
+}
+
+// ANIMATE
+const circumference=2*Math.PI*120; // ~754
+let currentCoverage=57;
+let gapFillMode=false;
+
+function animateDonut(pct){
+  const fill=document.getElementById('donutFill');
+  const dash=circumference*(pct/100);
+  fill.style.strokeDasharray=`${dash} ${circumference}`;
+  document.getElementById('donutPct').textContent=pct+'%';
+  document.getElementById('donutLabel').textContent=pct===100?'Full Coverage':'Coverage';
+}
+
+function animateBars(){
+  document.querySelectorAll('.domain-bar[data-pct]').forEach(b=>{
+    const pct=gapFillMode?100:b.dataset.pct;
+    b.style.width=pct+'%';
+    if(gapFillMode){b.className='domain-bar green'}
+  });
+  document.querySelectorAll('.phase-bar[data-pct]').forEach(b=>{
+    const pct=gapFillMode?100:b.dataset.pct;
+    b.style.width=pct+'%';
+    if(gapFillMode){b.style.background='var(--green)'}
+  });
+}
+
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseInt(el.dataset.count);
+    let current=0;
+    const step=Math.max(1,Math.ceil(target/60));
+    const timer=setInterval(()=>{
+      current+=step;
+      if(current>=target){current=target;clearInterval(timer)}
+      el.textContent=current;
+    },25);
+  });
+}
+
+function toggleCoverage(){
+  gapFillMode=!gapFillMode;
+  document.getElementById('coverageToggle').classList.toggle('active',gapFillMode);
+  animateDonut(gapFillMode?100:57);
+  animateBars();
+  // Update domain statuses
+  document.querySelectorAll('.domain-status').forEach((s,i)=>{
+    if(gapFillMode){s.className='domain-status green';s.textContent='100%'}
+    else{s.className=`domain-status ${domains[i].color}`;s.textContent=domains[i].pct+'%'}
+  });
+  document.querySelectorAll('.domain-meta').forEach((m,i)=>{
+    if(gapFillMode) m.textContent=`${domains[i].count}/${domains[i].count} covered · 0 partial · 0 gaps`;
+    else m.textContent=`${domains[i].covered}/${domains[i].count} covered · ${domains[i].partial} partial · ${domains[i].gap} gaps`;
+  });
+  document.querySelectorAll('.phase-pct').forEach((p,i)=>{
+    if(gapFillMode){p.textContent='100%';p.style.color='var(--green)'}
+    else{const ph=phases[i];const col=ph.pct>=70?'var(--green)':ph.pct>=50?'var(--amber)':'var(--red)';p.textContent=ph.pct+'%';p.style.color=col}
+  });
+}
+
+// INTERSECTION OBSERVER
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.1});
+
+// INIT
+renderDomains();renderPhases();renderModules();renderGaps();
+
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+// Trigger animations when donut is visible
+const donutObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateDonut(57);animateBars();donutObs.unobserve(e.target)}});
+},{threshold:.3});
+donutObs.observe(document.querySelector('.donut-wrap'));
+
+// Counter animation on hero visible
+const heroObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateCounters();heroObs.unobserve(e.target)}});
+},{threshold:.3});
+heroObs.observe(document.querySelector('.hero-stats'));
+
+// Effort counters
+const effortObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    e.target.querySelectorAll('[data-count]').forEach(el=>{
+      const target=parseInt(el.dataset.count);let current=0;const step=Math.max(1,Math.ceil(target/50));
+      const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=current},30);
+    });
+    effortObs.unobserve(e.target);
+  }});
+},{threshold:.3});
+effortObs.observe(document.querySelector('.effort-box'));
+</script>
+</body>
+</html>
