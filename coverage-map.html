@@ -401,6 +401,130 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
   </div>
 </div>
 
+<!-- RTI Hours Breakdown -->
+<div class="section-title"><span class="icon">📊</span> RTI Hours Breakdown — 586 Total</div>
+<div class="section-sub">Complete source-by-source allocation of Related Technical Instruction hours</div>
+
+<!-- Shop-friendly quote -->
+<div style="background:linear-gradient(135deg,rgba(0,212,170,.08),rgba(124,106,255,.08));border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px 28px;margin-bottom:30px;position:relative">
+  <div style="font-size:1.8rem;position:absolute;top:16px;left:20px;opacity:.3">💬</div>
+  <div style="padding-left:36px">
+    <div style="font-style:italic;font-size:.95rem;line-height:1.7;color:var(--text)">"Your apprentice gets 586 hours of training through AEA. First ~150 hours = CAET certification. Next ~220 hours = CAET Advanced. Remaining ~216 hours = structures, ground ops, leadership, and engine systems. All online, self-paced."</div>
+    <div style="color:var(--muted);font-size:.75rem;margin-top:8px;text-transform:uppercase;letter-spacing:1px">Shop-Friendly Explanation</div>
+  </div>
+</div>
+
+<!-- Stacked Horizontal Bar -->
+<div class="rti-breakdown-bar" id="rtiBreakdownBar" style="margin-bottom:30px">
+  <div style="display:flex;border-radius:12px;overflow:hidden;height:52px;background:rgba(255,255,255,.03);border:1px solid var(--border);cursor:pointer" id="stackedBar">
+    <div class="stacked-seg" data-source="caet" style="width:0%;background:linear-gradient(135deg,#00d4aa,#00b894);transition:width 1.5s ease;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#0a0a0f;white-space:nowrap;overflow:hidden" data-w="25.6">CAET 150h</div>
+    <div class="stacked-seg" data-source="adv" style="width:0%;background:linear-gradient(135deg,#7c6aff,#6c5ce7);transition:width 1.5s ease .15s;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden" data-w="37.5">Advanced 220h</div>
+    <div class="stacked-seg" data-source="structures" style="width:0%;background:linear-gradient(135deg,#ff9f43,#ee8822);transition:width 1.5s ease .3s;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#0a0a0f;white-space:nowrap;overflow:hidden" data-w="13.7">Structures 80h</div>
+    <div class="stacked-seg" data-source="ground" style="width:0%;background:linear-gradient(135deg,#ffd700,#f0c800);transition:width 1.5s ease .45s;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#0a0a0f;white-space:nowrap;overflow:hidden" data-w="3.4">20h</div>
+    <div class="stacked-seg" data-source="leadership" style="width:0%;background:linear-gradient(135deg,#ff6b6b,#e55656);transition:width 1.5s ease .6s;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden" data-w="15.4">Leadership 90h</div>
+    <div class="stacked-seg" data-source="engine" style="width:0%;background:linear-gradient(135deg,#e17055,#d35400);transition:width 1.5s ease .75s;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden" data-w="4.4">26h</div>
+  </div>
+  <!-- Legend -->
+  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;justify-content:center">
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#00d4aa;display:inline-block"></span>CAET · 150h · 26%</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#7c6aff;display:inline-block"></span>Advanced · 220h · 37%</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#ff9f43;display:inline-block"></span>Structures · 80h · 14%</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#ffd700;display:inline-block"></span>Ground Ops · 20h · 3%</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#ff6b6b;display:inline-block"></span>Leadership · 90h · 15%</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#e17055;display:inline-block"></span>Engine · 26h · 5%</span>
+  </div>
+</div>
+
+<!-- Expandable Source Details -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:40px" id="rtiDetailGrid">
+  <!-- CAET -->
+  <div class="cat-card caet" onclick="this.classList.toggle('expanded')" style="border-left:4px solid var(--caet)">
+    <div class="cat-num">26% of RTI · ~150 Hours</div>
+    <div class="cat-name">CAET Training</div>
+    <div class="cat-detail">8 categories covering entry-level avionics fundamentals</div>
+    <div class="cat-tag">Click to expand</div>
+    <div class="cat-expand">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between"><span>Maintenance Procedures & Regulatory</span><strong style="color:var(--caet)">20 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:13.3%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Basic Electrical Theory & Systems</span><strong style="color:var(--caet)">30 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:20%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>CNS — Comm, Nav & Surveillance</span><strong style="color:var(--caet)">25 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:16.7%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Flight Instrument & Pitot-Static</span><strong style="color:var(--caet)">20 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:13.3%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Digital Databus Systems</span><strong style="color:var(--caet)">15 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:10%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Aircraft Wiring, Hardware & Install</span><strong style="color:var(--caet)">20 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:13.3%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Tools, Test Equipment & Measurement</span><strong style="color:var(--caet)">10 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:6.7%;background:var(--caet);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Safety, Housekeeping & Best Practices</span><strong style="color:var(--caet)">10 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:6.7%;background:var(--caet);border-radius:2px"></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Advanced -->
+  <div class="cat-card adv" onclick="this.classList.toggle('expanded')" style="border-left:4px solid var(--adv)">
+    <div class="cat-num">37% of RTI · ~220 Hours</div>
+    <div class="cat-name">CAET Advanced Training</div>
+    <div class="cat-detail">8 categories covering systems-level mastery</div>
+    <div class="cat-tag">Click to expand</div>
+    <div class="cat-expand">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between"><span>Attitude, Heading & Air Data</span><strong style="color:var(--adv)">55 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:25%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Flight Management & Navigation</span><strong style="color:var(--adv)">40 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:18.2%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Autopilot & Flight Control</span><strong style="color:var(--adv)">35 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:15.9%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Avionics Systems Integration</span><strong style="color:var(--adv)">25 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:11.4%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Wire Harness Fabrication & Install</span><strong style="color:var(--adv)">30 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:13.6%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Audio & Communication Systems</span><strong style="color:var(--adv)">15 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:6.8%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Software, Documentation & Config</span><strong style="color:var(--adv)">12 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:5.5%;background:var(--adv);border-radius:2px"></div></div>
+        <div style="display:flex;justify-content:space-between"><span>Surveillance Systems</span><strong style="color:var(--adv)">8 hrs</strong></div>
+        <div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px"><div style="height:100%;width:3.6%;background:var(--adv);border-radius:2px"></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Aircraft Structures -->
+  <div class="cat-card" onclick="this.classList.toggle('expanded')" style="border-left:4px solid #ff9f43;background:rgba(255,159,67,.08);border:1px solid rgba(255,159,67,.2);border-left:4px solid #ff9f43;border-radius:14px;padding:18px;cursor:pointer;transition:.3s">
+    <div class="cat-num" style="color:#ff9f43">14% of RTI · ~80 Hours</div>
+    <div class="cat-name">Gap: Aircraft Structures</div>
+    <div class="cat-detail">Hardware, riveting, sheet metal, composites, bonding, antennas, racks</div>
+    <div style="display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:600;margin-top:8px;background:rgba(255,159,67,.15);color:#ff9f43">Click to expand</div>
+    <div class="cat-expand">Structural hardware identification & installation, solid and blind riveting, sheet metal layout & forming, composite repair basics, adhesive bonding, antenna mounting & ground planes, avionics rack fabrication & installation.</div>
+  </div>
+  <!-- Ground Operations -->
+  <div class="cat-card" onclick="this.classList.toggle('expanded')" style="border-left:4px solid #ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-left:4px solid #ffd700;border-radius:14px;padding:18px;cursor:pointer;transition:.3s">
+    <div class="cat-num" style="color:#ffd700">3% of RTI · ~20 Hours</div>
+    <div class="cat-name">Gap: Ground Operations</div>
+    <div class="cat-detail">Marshaling, taxi, tie-down, GSE, start/run-up</div>
+    <div style="display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:600;margin-top:8px;background:rgba(255,215,0,.15);color:#ffd700">Click to expand</div>
+    <div class="cat-expand">Aircraft marshaling signals, taxi procedures, tie-down & mooring, ground support equipment operation, engine start & run-up procedures, ground power connection.</div>
+  </div>
+  <!-- Leadership & QA -->
+  <div class="cat-card" onclick="this.classList.toggle('expanded')" style="border-left:4px solid #ff6b6b;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-left:4px solid #ff6b6b;border-radius:14px;padding:18px;cursor:pointer;transition:.3s">
+    <div class="cat-num" style="color:#ff6b6b">15% of RTI · ~90 Hours</div>
+    <div class="cat-name">Gap: Leadership & QA</div>
+    <div class="cat-detail">QMS, IA prep, shop management, mentoring, tech writing, regulatory, professional dev</div>
+    <div style="display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:600;margin-top:8px;background:rgba(255,107,107,.15);color:#ff6b6b">Click to expand</div>
+    <div class="cat-expand">Quality management systems, IA authorization preparation, shop/hangar management, mentoring & training others, technical writing & documentation, regulatory compliance management, professional development & career planning.</div>
+  </div>
+  <!-- Engine Integration -->
+  <div class="cat-card" onclick="this.classList.toggle('expanded')" style="border-left:4px solid #e17055;background:rgba(225,112,85,.08);border:1px solid rgba(225,112,85,.2);border-left:4px solid #e17055;border-radius:14px;padding:18px;cursor:pointer;transition:.3s">
+    <div class="cat-num" style="color:#e17055">5% of RTI · ~26 Hours</div>
+    <div class="cat-name">Gap: Engine Integration</div>
+    <div class="cat-detail">Engine instruments, FADEC, synchrophasers, fire detection</div>
+    <div style="display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:600;margin-top:8px;background:rgba(225,112,85,.15);color:#e17055">Click to expand</div>
+    <div class="cat-expand">Engine instrument systems (EGT, ITT, N1/N2, torque, fuel flow), FADEC interface & troubleshooting, propeller synchrophaser systems, fire detection & extinguishing system wiring.</div>
+  </div>
+</div>
+
 <!-- Exam Info -->
 <div class="section-title"><span class="icon">📋</span> Exam Specifications</div>
 <div class="exam-grid">
@@ -544,12 +668,28 @@ const observer=new IntersectionObserver((entries)=>{
 },{threshold:0.1});
 observer.observe(document.querySelector('.stats'));
 
+// RTI Breakdown stacked bar animation
+const rtiBarObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.stacked-seg').forEach(seg=>{
+        const w=seg.dataset.w;
+        setTimeout(()=>{seg.style.width=w+'%'},100);
+      });
+      rtiBarObserver.disconnect();
+    }
+  });
+},{threshold:0.1});
+const rtiBar=document.getElementById('rtiBreakdownBar');
+if(rtiBar) rtiBarObserver.observe(rtiBar);
+
 // Animate on load fallback
 setTimeout(()=>{
   animateCounters();
   setDonut('both');
   animateRTI();
   animateOJT();
+  document.querySelectorAll('.stacked-seg').forEach(seg=>{seg.style.width=seg.dataset.w+'%'});
 },500);
 </script>
 
