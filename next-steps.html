@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEA Apprenticeship Ecosystem — Next Steps Action Plan</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;--surface:#111827;--surface2:#1a2236;--border:#1e293b;
+  --text:#e2e8f0;--text-muted:#94a3b8;--text-dim:#64748b;
+  --red:#ef4444;--red-bg:rgba(239,68,68,.08);--red-border:rgba(239,68,68,.25);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.08);--amber-border:rgba(245,158,11,.25);
+  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.08);--blue-border:rgba(59,130,246,.25);
+  --green:#10b981;--green-bg:rgba(16,185,129,.08);--green-border:rgba(16,185,129,.25);
+  --gold:#d4a574;--accent:#818cf8;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* Header */
+.header{text-align:center;padding:3rem 0 2rem;border-bottom:1px solid var(--border);margin-bottom:3rem}
+.header .badge{display:inline-block;background:linear-gradient(135deg,var(--gold),#b8956a);color:#0a0e1a;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.35rem 1.2rem;border-radius:100px;margin-bottom:1.2rem}
+.header h1{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+.header .subtitle{color:var(--text-muted);font-size:1.05rem}
+.header .date{color:var(--text-dim);font-size:.85rem;margin-top:.5rem}
+
+/* Timeline bar */
+.timeline-bar{display:flex;gap:2px;border-radius:12px;overflow:hidden;margin-bottom:3rem;height:8px}
+.timeline-bar div{flex:1;transition:flex .3s}
+.timeline-bar .tb-red{background:var(--red)}.timeline-bar .tb-amber{background:var(--amber)}
+.timeline-bar .tb-blue{background:var(--blue)}.timeline-bar .tb-green{background:var(--green)}
+
+/* Phase sections */
+.phase{margin-bottom:1.5rem;border-radius:12px;border:1px solid var(--border);overflow:hidden;transition:border-color .3s}
+.phase.red{border-color:var(--red-border)}.phase.red .phase-header{background:var(--red-bg)}
+.phase.amber{border-color:var(--amber-border)}.phase.amber .phase-header{background:var(--amber-bg)}
+.phase.blue{border-color:var(--blue-border)}.phase.blue .phase-header{background:var(--blue-bg)}
+.phase.green{border-color:var(--green-border)}.phase.green .phase-header{background:var(--green-bg)}
+
+.phase-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;cursor:pointer;user-select:none;gap:1rem}
+.phase-header:hover{filter:brightness(1.15)}
+.phase-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.red .phase-dot{background:var(--red)}.amber .phase-dot{background:var(--amber)}
+.blue .phase-dot{background:var(--blue)}.green .phase-dot{background:var(--green)}
+.phase-title{flex:1;font-weight:700;font-size:1.1rem}
+.phase-timeline{color:var(--text-muted);font-size:.85rem;font-weight:500}
+.phase-chevron{font-size:1.2rem;color:var(--text-dim);transition:transform .25s}
+.phase.open .phase-chevron{transform:rotate(180deg)}
+.phase-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.phase.open .phase-body{max-height:800px}
+.phase-content{padding:0 1.5rem 1.5rem}
+
+.action-item{display:flex;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.action-item:last-child{border-bottom:none}
+.action-num{font-size:.75rem;font-weight:700;min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;margin-top:1px}
+.red .action-num{background:var(--red-border);color:var(--red)}
+.amber .action-num{background:var(--amber-border);color:var(--amber)}
+.blue .action-num{background:var(--blue-border);color:var(--blue)}
+.green .action-num{background:var(--green-border);color:var(--green)}
+.action-text{font-size:.95rem;color:var(--text)}
+.action-text .due{display:inline-block;font-size:.75rem;font-weight:600;color:var(--red);background:var(--red-bg);border:1px solid var(--red-border);padding:.1rem .5rem;border-radius:4px;margin-left:.4rem}
+
+/* Metrics */
+.section-title{font-size:1.5rem;font-weight:800;margin:3rem 0 1.5rem;display:flex;align-items:center;gap:.6rem}
+.section-title span{font-size:1.3rem}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:3rem}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;transition:transform .2s,border-color .2s}
+.metric-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.metric-icon{font-size:1.8rem;margin-bottom:.5rem}
+.metric-value{font-size:2rem;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
+.metric-label{font-size:.8rem;color:var(--text-muted);margin-top:.25rem;line-height:1.3}
+
+/* Resources */
+.resources{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:3rem}
+.resource-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.resource-card .ri{font-size:1.3rem}
+.resource-card span{font-size:.9rem;color:var(--text)}
+
+/* Big Picture */
+.big-picture{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--gold);border-radius:16px;padding:2.5rem;margin-top:1rem;position:relative;overflow:hidden}
+.big-picture::before{content:'';position:absolute;top:-50%;right:-30%;width:60%;height:200%;background:radial-gradient(ellipse,rgba(212,165,116,.04),transparent 70%);pointer-events:none}
+.big-picture h2{font-size:1.6rem;font-weight:800;text-align:center;margin-bottom:.4rem;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.big-picture .bp-sub{text-align:center;color:var(--text-muted);margin-bottom:2rem;font-size:.95rem}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.pillar{background:rgba(255,255,255,.03);border:1px solid rgba(212,165,116,.2);border-radius:12px;padding:1.3rem 1rem;text-align:center;transition:transform .2s,border-color .2s}
+.pillar:hover{transform:translateY(-3px);border-color:var(--gold)}
+.pillar .p-icon{font-size:2rem;margin-bottom:.5rem}
+.pillar .p-num{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.pillar .p-title{font-size:.85rem;font-weight:700;margin-bottom:.2rem}
+.pillar .p-desc{font-size:.72rem;color:var(--text-muted);line-height:1.4}
+.bp-closing{text-align:center;font-size:1.2rem;font-weight:700;color:var(--gold);padding-top:.5rem;border-top:1px solid rgba(212,165,116,.2)}
+
+/* Print */
+@media print{
+  body{background:#fff;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .container{padding:0}
+  .phase-body{max-height:none!important}
+  .phase-chevron{display:none}
+  .header{padding:1rem 0;border-bottom:2px solid #333}
+  .header h1{-webkit-text-fill-color:#111;background:none}
+  .phase{break-inside:avoid;border:1px solid #ccc;margin-bottom:1rem}
+  .big-picture{border-color:#999;break-inside:avoid}
+  .big-picture h2{-webkit-text-fill-color:#111;background:none}
+  .metric-card,.pillar{border:1px solid #ccc}
+  .timeline-bar{display:none}
+}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}
+  .pillars{grid-template-columns:repeat(2,1fr)}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="badge">Confidential — Internal Strategy</div>
+  <h1>Next Steps Action Plan</h1>
+  <div class="subtitle">AEA Apprenticeship Ecosystem Buildout</div>
+  <div class="date">Prepared February 15, 2026 &nbsp;·&nbsp; Presentation: Monday Feb 16</div>
+</div>
+
+<div class="timeline-bar">
+  <div class="tb-red"></div><div class="tb-amber"></div><div class="tb-blue"></div><div class="tb-green"></div>
+</div>
+
+<!-- Immediate -->
+<div class="phase red open" onclick="toggle(this)">
+  <div class="phase-header">
+    <div class="phase-dot"></div>
+    <div class="phase-title">Immediate — This Week</div>
+    <div class="phase-timeline">Feb 15–21</div>
+    <div class="phase-chevron">▾</div>
+  </div>
+  <div class="phase-body"><div class="phase-content">
+    <div class="action-item"><div class="action-num">1</div><div class="action-text">Send CAET Advanced test weights + question bank to Alexis at USI <span class="due">Due: Mon Feb 16</span></div></div>
+    <div class="action-item"><div class="action-num">2</div><div class="action-text">Present product vision to boss: Funding Finder → Grant Writer → Tracking Tool pipeline</div></div>
+    <div class="action-item"><div class="action-num">3</div><div class="action-text">Present CAET/Advanced coverage map showing apprenticeship alignment</div></div>
+    <div class="action-item"><div class="action-num">4</div><div class="action-text">Get boss approval to proceed with Grant Writer POC and Tracking Tool MVP</div></div>
+    <div class="action-item"><div class="action-num">5</div><div class="action-text">Deploy Grant Finder fixes (Aaron)</div></div>
+  </div></div>
+</div>
+
+<!-- Short-Term -->
+<div class="phase amber" onclick="toggle(this)">
+  <div class="phase-header">
+    <div class="phase-dot"></div>
+    <div class="phase-title">Short-Term — Weeks 1–4</div>
+    <div class="phase-timeline">Feb–Mar 2026</div>
+    <div class="phase-chevron">▾</div>
+  </div>
+  <div class="phase-body"><div class="phase-content">
+    <div class="action-item"><div class="action-num">6</div><div class="action-text">Build AI Grant Writer proof of concept (Claude + FAA AWD templates)</div></div>
+    <div class="action-item"><div class="action-num">7</div><div class="action-text">Test Grant Writer with 5–10 member shops</div></div>
+    <div class="action-item"><div class="action-num">8</div><div class="action-text">Begin CAET category restructure — migrate existing 12 modules → 8 categories</div></div>
+    <div class="action-item"><div class="action-num">9</div><div class="action-text">Determine CAET Advanced training module structure (14 modules → 8 categories)</div></div>
+    <div class="action-item"><div class="action-num">10</div><div class="action-text">Start Reddit marketing campaign (avionics + genealogy tracks)</div></div>
+    <div class="action-item"><div class="action-num">11</div><div class="action-text">Update aea.net/caet website with official Advanced categories and weights</div></div>
+    <div class="action-item"><div class="action-num">12</div><div class="action-text">Create separate Reddit + Facebook accounts for Lineage genealogy marketing</div></div>
+  </div></div>
+</div>
+
+<!-- Medium-Term -->
+<div class="phase blue" onclick="toggle(this)">
+  <div class="phase-header">
+    <div class="phase-dot"></div>
+    <div class="phase-title">Medium-Term — Months 1–3</div>
+    <div class="phase-timeline">Mar–May 2026</div>
+    <div class="phase-chevron">▾</div>
+  </div>
+  <div class="phase-body"><div class="phase-content">
+    <div class="action-item"><div class="action-num">13</div><div class="action-text">Build Apprenticeship Tracking Tool MVP (Next.js + Supabase)</div></div>
+    <div class="action-item"><div class="action-num">14</div><div class="action-text">Develop gap content: Aircraft Structures (~60–80 hrs), Ground Operations (~15–20 hrs)</div></div>
+    <div class="action-item"><div class="action-num">15</div><div class="action-text">Launch CAET Advanced at AEA Convention (March 23–26)</div></div>
+    <div class="action-item"><div class="action-num">16</div><div class="action-text">Fastport DOL approval (expected March 20) → signing ceremony March 23</div></div>
+    <div class="action-item"><div class="action-num">17</div><div class="action-text">ATEC Conference (March 29–April 1) — ACS panel presentation</div></div>
+    <div class="action-item"><div class="action-num">18</div><div class="action-text">Grant Writer: expand from POC to full member tool</div></div>
+    <div class="action-item"><div class="action-num">19</div><div class="action-text">Begin Tracking Tool pilot with 5 member shops</div></div>
+    <div class="action-item"><div class="action-num">20</div><div class="action-text">Build Leadership &amp; QA training content (~50–60 hrs)</div></div>
+  </div></div>
+</div>
+
+<!-- Long-Term -->
+<div class="phase green" onclick="toggle(this)">
+  <div class="phase-header">
+    <div class="phase-dot"></div>
+    <div class="phase-title">Long-Term — Months 3–12</div>
+    <div class="phase-timeline">May 2026–Feb 2027</div>
+    <div class="phase-chevron">▾</div>
+  </div>
+  <div class="phase-body"><div class="phase-content">
+    <div class="action-item"><div class="action-num">21</div><div class="action-text">Scale Tracking Tool to all participating shops</div></div>
+    <div class="action-item"><div class="action-num">22</div><div class="action-text">CAET Pro certification development (Level 3 ASTM)</div></div>
+    <div class="action-item"><div class="action-num">23</div><div class="action-text">LMS integration (CAET auto-feeds RTI progress into Tracker)</div></div>
+    <div class="action-item"><div class="action-num">24</div><div class="action-text">Full 50-state funding data in Grant Finder (verified .gov sources)</div></div>
+    <div class="action-item"><div class="action-num">25</div><div class="action-text">AI Grant Writer: add grant matching intelligence (auto-detect new FOAs)</div></div>
+    <div class="action-item"><div class="action-num">26</div><div class="action-text">Lineage Hub: DNA analysis features, mobile app</div></div>
+    <div class="action-item"><div class="action-num">27</div><div class="action-text">Employer compliance automation in Tracking Tool</div></div>
+    <div class="action-item"><div class="action-num">28</div><div class="action-text">DOL reporting automation</div></div>
+  </div></div>
+</div>
+
+<!-- Key Metrics -->
+<div class="section-title"><span>📊</span> Key Metrics to Track</div>
+<div class="metrics-grid">
+  <div class="metric-card"><div class="metric-icon">🏢</div><div class="metric-value" data-target="50">0</div><div class="metric-label">Shops Enrolled in Apprenticeship</div></div>
+  <div class="metric-card"><div class="metric-icon">👷</div><div class="metric-value" data-target="250">0</div><div class="metric-label">Active Apprentices</div></div>
+  <div class="metric-card"><div class="metric-icon">✅</div><div class="metric-value" data-target="92" data-suffix="%">0</div><div class="metric-label">CAET + Advanced Pass Rate</div></div>
+  <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-value" data-target="2" data-prefix="$" data-suffix="M">0</div><div class="metric-label">Funding Claimed by Members</div></div>
+  <div class="metric-card"><div class="metric-icon">📝</div><div class="metric-value" data-target="500">0</div><div class="metric-label">Grant Applications Generated</div></div>
+  <div class="metric-card"><div class="metric-icon">⏱️</div><div class="metric-value" data-target="18" data-suffix=" mo">0</div><div class="metric-label">Avg Time to Journeyworker</div></div>
+  <div class="metric-card"><div class="metric-icon">📚</div><div class="metric-value" data-target="85" data-suffix="%">0</div><div class="metric-label">RTI Completion Rate</div></div>
+</div>
+
+<!-- Resources Needed -->
+<div class="section-title"><span>🔧</span> Resources Needed</div>
+<div class="resources">
+  <div class="resource-card"><div class="ri">💻</div><span>Dev time for Tracking Tool + Grant Writer</span></div>
+  <div class="resource-card"><div class="ri">📖</div><span>Content development for gap areas (~150–215 hours)</span></div>
+  <div class="resource-card"><div class="ri">🎓</div><span>USI coordination for Advanced exam launch</span></div>
+  <div class="resource-card"><div class="ri">🚀</div><span>Aaron for deployments</span></div>
+  <div class="resource-card"><div class="ri">🏭</div><span>5–10 pilot shops for Grant Writer testing</span></div>
+  <div class="resource-card"><div class="ri">🔬</div><span>5 pilot shops for Tracking Tool</span></div>
+</div>
+
+<!-- The Big Picture -->
+<div class="section-title"><span>🎯</span> The Big Picture</div>
+<div class="big-picture">
+  <h2>The Only End-to-End Solution in Aviation</h2>
+  <div class="bp-sub">AEA becomes the ONLY aviation association offering the complete workforce development stack.</div>
+  <div class="pillars">
+    <div class="pillar"><div class="p-icon">🎓</div><div class="p-num">Pillar 1</div><div class="p-title">Certification</div><div class="p-desc">CAET + Advanced + Pro</div></div>
+    <div class="pillar"><div class="p-icon">🔍</div><div class="p-num">Pillar 2</div><div class="p-title">Funding Discovery</div><div class="p-desc">Grant Finder</div></div>
+    <div class="pillar"><div class="p-icon">🤖</div><div class="p-num">Pillar 3</div><div class="p-title">Funding Acquisition</div><div class="p-desc">AI Grant Writer</div></div>
+    <div class="pillar"><div class="p-icon">📋</div><div class="p-num">Pillar 4</div><div class="p-title">Program Management</div><div class="p-desc">Tracking Tool</div></div>
+    <div class="pillar"><div class="p-icon">📚</div><div class="p-num">Pillar 5</div><div class="p-title">Training Delivery</div><div class="p-desc">CAET RTI via ACE Avionics</div></div>
+    <div class="pillar"><div class="p-icon">⚖️</div><div class="p-num">Pillar 6</div><div class="p-title">DOL Compliance</div><div class="p-desc">Automated tracking + reporting</div></div>
+  </div>
+  <div class="bp-closing">Complete end-to-end workforce development. Nobody else is even close.</div>
+</div>
+
+</div>
+
+<script>
+function toggle(el){el.classList.toggle('open')}
+
+// Animated counters
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);observer.unobserve(e.target)}})
+},{threshold:.5});
+document.querySelectorAll('.metric-value').forEach(el=>observer.observe(el));
+
+function animateCounter(el){
+  const target=+el.dataset.target,prefix=el.dataset.prefix||'',suffix=el.dataset.suffix||'';
+  const duration=1200;let start=null;
+  function step(ts){
+    if(!start)start=ts;
+    const progress=Math.min((ts-start)/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    el.textContent=prefix+Math.round(target*eased)+suffix;
+    if(progress<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>
